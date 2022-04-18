@@ -16,3 +16,8 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+
+Route::get('/', 'WordController@show')->name('word.show');
+Route::get('/enter/{letters}/{marks}', 'WordController@enter')->name('word.enter');
+Route::get('/clear', 'WordController@clear')->name('word.clear');

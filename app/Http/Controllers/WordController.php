@@ -8,79 +8,81 @@ use App\Models\Word;
 
 class WordController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function index()
+    // ==============================
+    // Display the current word stuff
+    // ==============================
+    public function show()
     {
-        //
-    }
+        /*  word = HELLO
+            map[0] = [
+                        'letters'=>['A','G','i','L','E']
+                        'marks'=>['x','x','x','g','y']
+                    ]
+            map[1] = [
+                        'letters'=>['S','O','U','N','D']
+                        'marks'=>['x','y','x','x','x']
+                    ]
+         */
+        $wordmaps = GGetWordMap();
+        $foundwords = [];
+        $wsql = '';
+        if (!empty($wordmaps)){
+            foreach ($wordmaps as $wordmap) {
+                $letters = $wordmap['letters'];
+                $marks = $wordmap['marks'];
+                $i = 0;
+                foreach ($letters as $letter) {
+                    $mark = $marks[$i];
+                    switch ($mark) {
+                        case 'x':
+                            // Black (bad)
+                            $wsql .= " and c0" . $i . " != '" . $letter . "' ";
+                            break;
+                        case 'g':
+                            // Green (good char good pos)
+                            $wsql .= " and c0" . $i . " = '" . $letter . "' ";
+                            break;
+                        case 'y':
+                            // Yellow (good char bad pos)
+                            $wsql .= " and c0" . $i . " != '" . $letter . "' ";
+                            $wsql .= " and word like '%" . $letter . "%' ";
+                            break;
+                        default:
+                            break;
+                    }
+                    $i++;
+                }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
+            }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \App\Http\Requests\StoreWordRequest  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(StoreWordRequest $request)
-    {
-        //
-    }
+            $sql = 'select word from words where 1=1 ' . $wsql . ' limit 10 ';
+            $foundwords = GExecSqlRaw ($sql);
+        }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\Word  $word
-     * @return \Illuminate\Http\Response
-     */
-    public function show(Word $word)
-    {
-        //
-    }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\Models\Word  $word
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(Word $word)
-    {
-        //
-    }
+        return view('show')->with('wordmaps', $wordmaps)->with('foundwords', $foundwords);
+    } // show
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \App\Http\Requests\UpdateWordRequest  $request
-     * @param  \App\Models\Word  $word
-     * @return \Illuminate\Http\Response
-     */
-    public function update(UpdateWordRequest $request, Word $word)
+    // ==============================
+    // capture the entered row of letters into the session word map
+    // ==============================
+    public function enter(string $letters, string $marks)
     {
-        //
-    }
+        /*  word = HELLO
+            $letters = AGILE, $marks = xxxgy
+            $letters = SOUND, $marks = xyxxx
+         */
+        $wordmap = GSetWordMap($letters, $marks);
+        return $this->show();
+    } // enter
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\Models\Word  $word
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy(Word $word)
+    // ==============================
+    // Clear the current word stuff
+    // ==============================
+    public function clear()
     {
-        //
-    }
+        GClearWordMap();
+        return $this->show();
+    } // clear
+
 }
