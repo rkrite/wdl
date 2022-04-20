@@ -19,5 +19,5 @@ Route::get('/', function () {
 
 
 Route::get('/', 'WordController@show')->name('word.show');
-Route::get('/enter/{letters}/{marks}', 'WordController@enter')->name('word.enter');
+Route::post('/enter', 'WordController@enter')->name('word.enter');
 Route::get('/clear', 'WordController@clear')->name('word.clear');

@@ -73,3 +73,31 @@
             return DB::select( $sql );
         }
     } // GExecSqlRaw
+
+    // =====================================
+    // =====================================
+    if (!function_exists('GForceNoCache')) {
+        /**
+         * Calc and return the current vendor Pricing
+         * @return string - "?<random_number>" or "<blank>"
+         */
+        function GForceNoCache () {
+            $str = "";
+            if (GC("FORCE_NO_CACHE")){
+                $str = "?" . GGenCode();
+            }
+            return ($str);
+        }
+    } // GForceNoCache
+
+    // =====================================
+    // =====================================
+    if (!function_exists('GGenCode')) {
+    /**
+     * Generate a code with a given length
+     * @param int $length [description]
+     */
+        function GGenCode(int $length=20) {
+            return (strtolower(str_random($length)));
+        }
+    } // GGenCode

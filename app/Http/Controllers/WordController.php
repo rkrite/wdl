@@ -58,22 +58,39 @@ class WordController extends Controller
             $sql = 'select word from words where 1=1 ' . $wsql . ' limit 10 ';
             $foundwords = GExecSqlRaw ($sql);
         }
-
-
+        while (count($wordmaps) < 5){
+            $wordmaps[] = ['letters'=>['','','','',''],'marks'=>['','','','','']];
+        }
         return view('show')->with('wordmaps', $wordmaps)->with('foundwords', $foundwords);
     } // show
 
     // ==============================
     // capture the entered row of letters into the session word map
     // ==============================
-    public function enter(string $letters, string $marks)
+    public function enter(Request $request)
     {
         /*  word = HELLO
             $letters = AGILE, $marks = xxxgy
             $letters = SOUND, $marks = xyxxx
          */
-        $wordmap = GSetWordMap($letters, $marks);
-        return $this->show();
+        GClearWordMap();
+        for($rowidx=0;$rowidx<6;$rowidx++){
+            $vLetters = '';
+            $vMarks = '';
+            for($colidx=0;$colidx<5;$colidx++){
+                $idx = 'word_' . $rowidx . '_letter_' . $colidx;
+
+                $vLetter = $request[$idx];
+                $vMark = $request['val_' . $idx];
+
+                $vLetters .= $vLetter;
+                $vMarks .= $vMark;
+            }
+            GSetWordMap($vLetters, $vMarks);
+        }
+
+        return redirect()->route('word.show');
+        // return $this->show();
     } // enter
 
     // ==============================
