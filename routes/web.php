@@ -18,6 +18,6 @@ Route::get('/', function () {
 });
 
 
-Route::get('/', 'WordController@show')->name('word.show');
-Route::post('/enter', 'WordController@enter')->name('word.enter');
-Route::get('/clear', 'WordController@clear')->name('word.clear');
+Route::get('/', 'App\Http\Controllers\WordController@show')->name('word.show');
+Route::post('/enter', 'App\Http\Controllers\WordController@enter')->name('word.enter');
+Route::get('/clear', 'App\Http\Controllers\WordController@clear')->name('word.clear');

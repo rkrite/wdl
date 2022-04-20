@@ -3,6 +3,18 @@
 
     // =====================================
     // =====================================
+    if (!function_exists('GC')) {
+        /**
+         * Get Global Config items. Use this instead of env()
+         * @param string $configname [name of config item]
+         */
+        function GC(string $configname){
+            return env($configname);
+        }
+    } // GC
+
+    // =====================================
+    // =====================================
     if (!function_exists('GSetWordMap')){
         function GSetWordMap($pLetters, $pMarks) {
             $vWordMaps = GGetWordMap();
@@ -47,7 +59,10 @@
     // =====================================
     if (!function_exists('GPutSession')){
         function GPutSession($key, $val) {
-            return $_SESSION[$key] = $val;
+
+            session([$key => $val]);
+
+            return session($key);
         }
     } // GPutSession
 
@@ -55,11 +70,7 @@
     // =====================================
     if (!function_exists('GGetSession')){
         function GGetSession($key) {
-            if (array_key_exists($key, $_SESSION)) {
-                return $_SESSION[$key];
-            } else {
-                return false;
-            }
+            return session($key);
         }
     } // GGetSession
 

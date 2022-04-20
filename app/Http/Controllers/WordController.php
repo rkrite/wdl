@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Route;
 use App\Http\Requests\StoreWordRequest;
 use App\Http\Requests\UpdateWordRequest;
 use App\Models\Word;
@@ -58,7 +60,7 @@ class WordController extends Controller
             $sql = 'select word from words where 1=1 ' . $wsql . ' limit 10 ';
             $foundwords = GExecSqlRaw ($sql);
         }
-        while (count($wordmaps) < 5){
+        while (count($wordmaps) <= 5){
             $wordmaps[] = ['letters'=>['','','','',''],'marks'=>['','','','','']];
         }
         return view('show')->with('wordmaps', $wordmaps)->with('foundwords', $foundwords);

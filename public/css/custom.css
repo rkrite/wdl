@@ -1,4 +1,5 @@
 .mark_x { background-color: black; }
-.mark_y { background-color: yellow; }
+.mark_y { background-color: orange; }
 .mark_g { background-color: green; }
 .mark_ { background-color: grey; }
+.wc-input { color: white; text-transform: uppercase;  }
