@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+<style>
+input {
+width: 25px; margin: 5px; height:25px;
+}
+</style>
+</head>
+<body>
+<input class="inputs" type="text" maxlength="1" />
+<input class="inputs" type="text" maxlength="1" />
+<input class="inputs" type="text" maxlength="1" />
+<input class="inputs" type="text" maxlength="1" />
+<input class="inputs" type="text" maxlength="1" />
+<input class="inputs" type="text" maxlength="1" />
+<script>
+$(".inputs").keyup(function () {
+    if (this.value.length == this.maxLength) {
+      $(this).next('.inputs').focus();
+    }
+});
+</script>
+</body>
+</html>

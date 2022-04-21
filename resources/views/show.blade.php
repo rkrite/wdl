@@ -33,11 +33,11 @@
             <form action="{{ route('word.enter') }}" method="post">
                 @csrf
                 @foreach ($wordmaps as $rowidx => $wordmap)
-                <div class="form-group row  border-0">
+                <div class=" row  border-0">
                     <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">&nbsp;</div>
                     @foreach ($wordmap["letters"] as $colidx => $letter)
                     <div class="col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1">
-                        <input type="text" value="{{ $letter }}" class="input-sm wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state" name="word_{{ $rowidx }}_letter_{{ $colidx }}" id="word_{{ $rowidx }}_letter_{{ $colidx }}">
+                        <input type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }} value="{{ $letter }}" class="input-sm wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state" name="word_{{ $rowidx }}_letter_{{ $colidx }}" id="word_{{ $rowidx }}_letter_{{ $colidx }}">
                         <input type="hidden" id="val_word_{{ $rowidx }}_letter_{{ $colidx }}" name="val_word_{{ $rowidx }}_letter_{{ $colidx }}" value="{{ $wordmap["marks"][$colidx] }}">
                     </div>
                     @endforeach
@@ -60,10 +60,9 @@
             </div>
         </div>
 
-
         <script>
             $(document).ready(function(){
-                $(".toggle-state").click(function(){
+                $(".toggle-state").on ('click',(function(){
                     var vElement = $(this);
                     var vName = vElement.attr("name");
                     var vValName = "val_" + vName;
@@ -90,6 +89,26 @@
                         vElement.removeClass("mark_g");
                         vValElement.val(vChar);
                         vElement.addClass("mark_" + vChar);
+                    }
+                }));
+            });
+        </script>
+        <script>
+            $(document).ready(function(){
+                $(".wc-input").keyup(function () {
+
+                    var vElement = $(this);
+                    var vElementName = vElement.attr("name");
+                    var vMaxLen = vElement.attr("maxlength");
+                    var vLen = vElement.val().length;
+                    var vIndex = vElement.index(".wc-input");
+                    var vNextElement = vElement.next('.wc-input');
+                    var vNextElementName = vNextElement.attr("name");
+
+                    var inputs = vElement.closest('form').find(':focusable');
+
+                    if (vLen >= vMaxLen) {
+                      vNextElement('.wc-input').focus();
                     }
                 });
             });

@@ -143,7 +143,7 @@ class WordController extends Controller
                 $idx = 'word_' . $rowidx . '_letter_' . $colidx;
 
                 $vLetter = $request[$idx];
-                $vMark = $request['val_' . $idx];
+                $vMark = $request['val_' . $idx]??'x';
 
                 $vLetters .= $vLetter;
                 $vMarks .= $vMark;
@@ -155,6 +155,8 @@ class WordController extends Controller
                 GSetWordMap($vLetters, $vMarks);
             }
         }
+
+// dr(GGetWordMap());
 
         return redirect()->route('word.show');
         // return $this->show();
