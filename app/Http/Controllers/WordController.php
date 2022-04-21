@@ -25,43 +25,102 @@ class WordController extends Controller
                         'marks'=>['x','y','x','x','x']
                     ]
          */
+        $numletters = 5;
+        $numwords = 6;
         $wordmaps = GGetWordMap();
         $foundwords = [];
         $wsql = '';
+        $usedLetters = [];
+        $br = "\n";
         if (!empty($wordmaps)){
             foreach ($wordmaps as $wordmap) {
                 $letters = $wordmap['letters'];
                 $marks = $wordmap['marks'];
                 $i = 0;
                 foreach ($letters as $letter) {
-                    $mark = $marks[$i];
-                    switch ($mark) {
-                        case 'x':
-                            // Black (bad)
-                            $wsql .= " and c0" . $i . " != '" . $letter . "' ";
-                            break;
-                        case 'g':
-                            // Green (good char good pos)
-                            $wsql .= " and c0" . $i . " = '" . $letter . "' ";
-                            break;
-                        case 'y':
-                            // Yellow (good char bad pos)
-                            $wsql .= " and c0" . $i . " != '" . $letter . "' ";
-                            $wsql .= " and word like '%" . $letter . "%' ";
-                            break;
-                        default:
-                            break;
+                    if (!empty($letter)){
+                        $mark = $marks[$i];
+                        switch ($mark) {
+                            case 'x':
+                                // Black (bad)
+                                $usedLetters[$letter]['c0' . ($i+1)]='x';
+                                $wsql .= " and c0" . ($i+1) . " != '" . $letter . "' " . $br;
+                                break;
+                            case 'g':
+                                // Green (good char good pos)
+                                $usedLetters[$letter]['c0' . ($i+1)]='g';
+                                $wsql .= " and c0" . ($i+1) . " = '" . $letter . "' " . $br;
+                                break;
+                            case 'y':
+                                // Yellow (good char bad pos)
+                                $usedLetters[$letter]['c0' . ($i+1)]='y';
+                                $wsql .= " and c0" . ($i+1) . " != '" . $letter . "' " . $br;
+                                $wsql .= " and word like '%" . $letter . "%' " . $br;
+                                break;
+                            default:
+                                break;
+                        }
                     }
                     $i++;
                 }
-
             }
 
-            $sql = 'select word from words where 1=1 ' . $wsql . ' limit 10 ';
+            foreach ($usedLetters as $letter => $rule) {
+                $hasX = [];
+                $hasY = [];
+                $hasG = [];
+                foreach ($rule as $col => $mark) {
+                    if ($mark == 'x'){
+                        $hasX[$col] = $mark;
+                    }
+                    if ($mark == 'y'){
+                        $hasY[$col] = $mark;
+                    }
+                    if ($mark == 'g'){
+                        $hasG[$col] = $mark;
+                    }
+                }
+
+                if ($hasY){
+                    foreach ($hasY as $col => $mark) {
+                        $wsql .= " and " . $col . " != '" . $letter . "' " . $br;
+                        $wsql .= " and word like '%" . $letter . "%' " . $br;
+                    }
+                }
+                if ($hasG){
+                    foreach ($hasG as $col => $mark) {
+                        $wsql .= " and " . $col . " = '" . $letter . "' " . $br;
+                    }
+                }
+                if ($hasX){
+                    foreach ($hasX as $col => $mark) {
+                        $wsql .= " and " . $col . " != '" . $letter . "' " . $br;
+                    }
+                    if ($hasG){
+                        $i = 0;
+                        for ($i=0;$i<$numletters;$i++){
+                            if (!array_key_exists('c0' . ($i+1), $hasG)){
+                                $wsql .= " and " . 'c0' . ($i+1) . " != '" . $letter . "' " . $br;
+                            }
+                        }
+
+                    } else {
+                        if (empty($hasY)){
+                            $wsql .= " and word not like '%" . $letter . "%' " . $br;
+                        }
+                    }
+                }
+            }
+
+            $sql = "select word from words " . $br . "where 1=1 " . $br . $wsql . "limit 10 " . $br;
             $foundwords = GExecSqlRaw ($sql);
         }
-        while (count($wordmaps) <= 5){
-            $wordmaps[] = ['letters'=>['','','','',''],'marks'=>['','','','','']];
+        while (count($wordmaps) < $numwords){
+            $letters = [];
+            while (count($letters) < $numletters){
+                $letters[count($letters)] = '';
+            }
+            $wordmaps[]=['letters'=>$letters,'marks'=>$letters];
         }
         return view('show')->with('wordmaps', $wordmaps)->with('foundwords', $foundwords);
     } // show
@@ -76,9 +135,10 @@ class WordController extends Controller
             $letters = SOUND, $marks = xyxxx
          */
         GClearWordMap();
-        for($rowidx=0;$rowidx<6;$rowidx++){
+        for($rowidx=0;$rowidx<=5;$rowidx++){
             $vLetters = '';
             $vMarks = '';
+            $vOK = 1;
             for($colidx=0;$colidx<5;$colidx++){
                 $idx = 'word_' . $rowidx . '_letter_' . $colidx;
 
@@ -87,8 +147,13 @@ class WordController extends Controller
 
                 $vLetters .= $vLetter;
                 $vMarks .= $vMark;
+                if (empty ($vLetter)){
+                    $vOK = 0;
+                }
             }
-            GSetWordMap($vLetters, $vMarks);
+            if ($vOK){
+                GSetWordMap($vLetters, $vMarks);
+            }
         }
 
         return redirect()->route('word.show');
@@ -101,7 +166,7 @@ class WordController extends Controller
     public function clear()
     {
         GClearWordMap();
-        return $this->show();
+        return redirect()->route('word.show');
     } // clear
 
 }

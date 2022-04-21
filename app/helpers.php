@@ -3,6 +3,18 @@
 
     // =====================================
     // =====================================
+    if (!function_exists('dr')) {
+        function dr($var, $keepalive=0){
+            if ($keepalive){
+                dump($var);
+            } else {
+                dd($var);
+            }
+        }
+    } // dr
+
+    // =====================================
+    // =====================================
     if (!function_exists('GC')) {
         /**
          * Get Global Config items. Use this instead of env()
@@ -22,8 +34,8 @@
                 $vWordMaps = [];
             }
             $vMapped = [];
-            $vLetters = str_split($pLetters);
-            $vMarks = str_split($pMarks);
+            $vLetters = str_split(strtolower($pLetters));
+            $vMarks = str_split(strtolower($pMarks));
             $vMapped['letters'] = $vLetters;
             $vMapped['marks'] = $vMarks;
             $vWordMaps[] = $vMapped;
