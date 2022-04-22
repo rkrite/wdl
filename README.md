@@ -19,6 +19,9 @@ It is a Laravel 8.83.8 site
 * Click Clear to clear the current words list
 * Don't cheat too much, Wordle is a great app that can be challenging and fun to work out on you own :)
 
+### Update Word List
+* Take a look at words-data.sql. This will give you the idea of what needs to be done.
+
 ### Updates
 * Maybe you can make this look nicer?
 * I did try to get the auto prompt to work once a ltter was input, but couldn't get that to work. Maybe you could give it go?
