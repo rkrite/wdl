@@ -4,7 +4,7 @@ A little project I did for fun that gives the user some suggested words from Wor
 
 ### Install
 It is a Laravel 8.83.8 site 
-- Clone this master report locally.
+- Clone this master repo locally.
 - Create a database called 'wdl'
 - Enter your db credentials into the .env file
 - Run the migration
