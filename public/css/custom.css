@@ -2,4 +2,7 @@
 .mark_y { background-color: orange; }
 .mark_g { background-color: green; }
 .mark_ { background-color: grey; }
-.wc-input { color: white; text-transform: uppercase;  }
+.wc-input { color: white; text-transform: uppercase;}
+.wc-field-group, .wc-input {  min-width: 50px;  max-width: 50px;  width: 50px; !important }
+.wc-body-desktop {min-width: 500px; }
+/*.input-group>input.someInput {flex: 0 1 100px;}*/
