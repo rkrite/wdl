@@ -1,4 +1,4 @@
-## Wordle Cheater
+## Laravel PHP Wordle Cheater
 
 A little project I did for fun that gives the user some suggested words from Wordle rules.
 
