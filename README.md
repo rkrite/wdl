@@ -18,6 +18,9 @@ It is a Laravel 8.83.8 site
 * Click Enter to show the suggested available words
 * Click Clear to clear the current words list
 * Don't cheat too much, Wordle is a great app that can be challenging and fun to work out on you own :)
+![WordleCheater](https://user-images.githubusercontent.com/25941420/164599971-4d01f302-8e9a-4d5d-93b3-957b30b98b41.png)
+
+
 
 ### Update Word List
 * Take a look at words-data.sql. This will give you the idea of what needs to be done.
