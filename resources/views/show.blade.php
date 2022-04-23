@@ -16,12 +16,12 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         {{-- Styles --}}
-        <link href="{{ GC("APP_URL") }}/css/app.css{{ GForceNoCache() }}" rel="stylesheet">
-        <link href="{{ GC("APP_URL") }}/css/custom.css{{ GForceNoCache() }}" rel="stylesheet">
+        <link href="./css/app.css{{ GForceNoCache() }}" rel="stylesheet">
+        <link href="./css/custom.css{{ GForceNoCache() }}" rel="stylesheet">
 
         {{-- Scripts --}}
-        <script src="{{ GC("APP_URL") }}/js/app.js{{ GForceNoCache() }}"></script>
-        <script src="{{ GC("APP_URL") }}/js/custom.js{{ GForceNoCache() }}"></script>
+        <script src="./js/app.js{{ GForceNoCache() }}"></script>
+        <script src="./js/custom.js{{ GForceNoCache() }}"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
 
@@ -31,7 +31,7 @@
         <div class="container wc-body-desktop">
             <div class="container text-center">
                 <h1>Wordle Cheater</h1>
-                <form action="{{ route('word.enter') }}" method="post">
+                <form action="./enter" method="post">
                     @csrf
                     @foreach ($wordmaps as $rowidx => $wordmap)
                     <div class="row border-1">
