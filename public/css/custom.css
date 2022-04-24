@@ -1,3 +1,17 @@
+
+
+
+
+
+body {
+    display: block;
+    margin: 8px;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+
 .mark_x { background-color: black; }
 .mark_y { background-color: orange; }
 .mark_g { background-color: green; }
@@ -6,3 +20,52 @@
 .wc-field-group, .wc-input {  min-width: 50px;  max-width: 50px;  width: 50px; !important }
 .wc-body-desktop {min-width: 500px; }
 /*.input-group>input.someInput {flex: 0 1 100px;}*/
+
+.wc-game {
+    width: 100%;
+    max-width: var(--game-max-width);
+    margin: 0 auto;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+.wc-board-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+    overflow: hidden;
+}
+#wc-board {
+    display: grid;
+    /*grid-template-rows: repeat(6, 1fr);*/
+    grid-gap: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+}
+.wc-grid {
+	 width: 350px;
+	 height: 420px;
+}
+.wc-input {
+	width: 100%;
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2rem;
+    line-height: 2rem;
+    font-weight: bold;
+    vertical-align: middle;
+    box-sizing: border-box;
+    text-transform: uppercase;
+    user-select: none;
+}
+.wc-row {
+	display: flex;
+	justify-content: center;
+	margin: 5px;
+
+}
+:host {
+	display:  inline-block;
+}

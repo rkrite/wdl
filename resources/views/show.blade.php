@@ -16,49 +16,54 @@
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         {{-- Styles --}}
-        <link href="./css/app.css{{ GForceNoCache() }}" rel="stylesheet">
-        <link href="./css/custom.css{{ GForceNoCache() }}" rel="stylesheet">
+        <link href="./css/app.css{{ GForceNoCache(['force'=>1]) }}" rel="stylesheet">
+        <link href="./css/custom.css{{ GForceNoCache(['force'=>1]) }}" rel="stylesheet">
 
         {{-- Scripts --}}
-        <script src="./js/app.js{{ GForceNoCache() }}"></script>
-        <script src="./js/custom.js{{ GForceNoCache() }}"></script>
+        <script src="./js/app.js{{ GForceNoCache(['force'=>1]) }}"></script>
+        <script src="./js/custom.js{{ GForceNoCache(['force'=>1]) }}"></script>
 
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
-
-
     </head>
-    <body class="wc-body-desktop">
-        <div class="container wc-body-desktop">
+
+    <body>
+        <div class="wc-game">
             <div class="container text-center">
-                <h1>Wordle Cheater</h1>
-                <form action="./enter" method="post">
-                    @csrf
-                    @foreach ($wordmaps as $rowidx => $wordmap)
-                    <div class="row border-1">
-                        <div class="col-xs-3 col-sm-3 col-md-3 col-lg-3 col-xl-3">&nbsp;</div>
-                        @foreach ($wordmap["letters"] as $colidx => $letter)
-                        <div class="wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
-                            <input
-                                type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
-                                value="{{ $letter }}"
-                                maxlength="1"
-                                class="form-control-lg input-sm wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
-                                name="word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                id="word_{{ $rowidx }}_letter_{{ $colidx }}">
-                            <input
-                                type="hidden"
-                                id="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                name="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                value="{{ $wordmap["marks"][$colidx] }}">
+                <h1 class="h1">Wordle Cheater</h1>
+                <h2>Why bother!!</h2>
+            </div>
+            <div class="wc-board-container">
+                <div id="wc-board">
+                    <form action="./enter" method="post">
+                        @csrf
+                        @foreach ($wordmaps as $rowidx => $wordmap)
+                        <div class="wc-row ">
+                            <div class="">&nbsp;</div>
+                            @foreach ($wordmap["letters"] as $colidx => $letter)
+                            <div class="wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
+                                <input
+                                    type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
+                                    value="{{ $letter }}"
+                                    maxlength="1"
+                                    class="wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
+                                    name="word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                    id="word_{{ $rowidx }}_letter_{{ $colidx }}">
+                                <input
+                                    type="hidden"
+                                    id="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                    name="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                    value="{{ $wordmap["marks"][$colidx] }}">
+                            </div>
+                            @endforeach
+                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">&nbsp;</div>
                         </div>
                         @endforeach
-                        <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">&nbsp;</div>
-                    </div>
-                    @endforeach
-                    <button type="submit" class="btn" href="/enter">Enter</button>
-                    <a class="btn" href="/clear">Clear</a>
-                </form>
+                        <button type="submit" class="btn" href="/enter">Enter</button>
+                        <a class="btn" href="/clear">Clear</a>
+                    </form>
+                </div>
             </div>
+
 
             <div class="container text-center">
                 <h1>Words found...</h1>

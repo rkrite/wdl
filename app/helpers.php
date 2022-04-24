@@ -1,5 +1,6 @@
 <?php
     use App\Word;
+    use Illuminate\Support\Str;
 
     // =====================================
     // =====================================
@@ -104,9 +105,10 @@
          * Calc and return the current vendor Pricing
          * @return string - "?<random_number>" or "<blank>"
          */
-        function GForceNoCache () {
+        function GForceNoCache ($pOptions=[]) {
+            $force = $pOptions??0;
             $str = "";
-            if (GC("FORCE_NO_CACHE")){
+            if ($force or GC("FORCE_NO_CACHE")){
                 $str = "?" . GGenCode();
             }
             return ($str);
@@ -121,6 +123,6 @@
      * @param int $length [description]
      */
         function GGenCode(int $length=20) {
-            return (strtolower(str_random($length)));
+            return (strtolower(Str::random($length)));
         }
     } // GGenCode
