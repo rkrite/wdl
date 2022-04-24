@@ -41,7 +41,7 @@
                             <div class="wc-row ">
                                 <div class="">&nbsp;</div>
                                 @foreach ($wordmap["letters"] as $colidx => $letter)
-                                <div class="input-group wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
+                                <div class="wc-field-group border-0">
                                     <input
                                         type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
                                         value="{{ $letter }}"
@@ -56,7 +56,6 @@
                                         value="{{ $wordmap["marks"][$colidx] }}">
                                 </div>
                                 @endforeach
-                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">&nbsp;</div>
                             </div>
                             @endforeach
                         </div>

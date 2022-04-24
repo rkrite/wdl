@@ -5,21 +5,11 @@ body {
     padding: 0;
 }
 
-.mark_x { background-color: black; }
+.mark_x { background-color: #383838; }
 .mark_y { background-color: orange; }
 .mark_g { background-color: green; }
 .mark_ { background-color: grey; }
-.wc-input {}
 .wc-field-group {  min-width: 50px;  max-width: 50px;  width: 50px; padding: 2px;};
-.wc-input {
-		color: white;
-		text-transform: uppercase;
- 		min-width: 50px;
- 		max-width: 50px;
- 		width: 50px;
- 		padding: 0;
- 		margin: 0;
- }
 .wc-body-desktop {min-width: 500px; }
 
 .wc-game {
@@ -29,7 +19,7 @@ body {
     height: 100%;
     display: flex;
     flex-direction: column;
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 .wc-board-container {
     display: flex;
@@ -37,11 +27,11 @@ body {
     align-items: center;
     flex-grow: 1;
     overflow: hidden;
-	padding-bottom: 10px;
-	margin-bottom: 10px;
+    padding-bottom: 10px;
+    margin-bottom: 10px;
 }
 .wc-game-row {
-	margin-bottom: 10px;
+    margin-bottom: 10px;
 }
 #wc-board {
     display: grid;
@@ -50,11 +40,13 @@ body {
     box-sizing: border-box;
 }
 .wc-grid {
-	width: 350px;
-	height: 420px;
+    width: 350px;
+    height: 420px;
 }
 .wc-input {
-	width: 100%;
+    margin: 0 auto;
+    color: white;
+    width: 100%;
     display: inline-flex;
     justify-content: center;
     align-items: center;
@@ -65,9 +57,10 @@ body {
     box-sizing: border-box;
     text-transform: uppercase;
     user-select: none;
+    text-align: center;
 }
 .wc-row {
-	display: flex;
-	justify-content: center;
-	margin: 0;
+    display: flex;
+    justify-content: center;
+    margin: 0;
 }
