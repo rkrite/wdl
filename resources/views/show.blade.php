@@ -79,13 +79,14 @@
 
 
             <div class="container text-center">
-                <h1>Words found...</h1>
+                <h1>Words found ({{ count($foundwords) }}{{ (count($foundwords))==30?"+":"" }})...</h1>
                 <div class="card deck-card">
-                    <div class="card-body">
-                    <!--{{ $i=1 }} -->
-                    @foreach ($foundwords as $foundword)
-                        <div>{{ e($i++  . ': ' . $foundword->word) }}</div>
-                    @endforeach
+                    <div class="card-body wc-found-words">
+                    <!-- {{ $i=1 }} -->
+                            @foreach ($foundwords as $foundword)
+                                <span class="btn btn-md border wc-found-word">{{ e($foundword->word) }}</span>
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>

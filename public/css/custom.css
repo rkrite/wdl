@@ -64,3 +64,12 @@ body {
     justify-content: center;
     margin: 0;
 }
+
+.wc-found-word{
+	margin: 3px;
+	padding-left: 3px;
+	padding-right: 3px;
+	font-size: .7rem;
+	font-family: courier;
+	background-color: #90EE90;
+}
