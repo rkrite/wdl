@@ -1,5 +1,5 @@
 ## Laravel PHP Wordle Cheater
-
+http://wdl.discooctopus.com/ - 
 A little project I did for fun that gives the user some suggested words from Wordle rules.
 
 ### Install
