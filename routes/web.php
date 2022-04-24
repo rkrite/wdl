@@ -13,10 +13,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('pi', function () {
+    phpinfo();
 });
-
 
 Route::get('/', 'App\Http\Controllers\WordController@show')->name('word.show');
 Route::post('/enter', 'App\Http\Controllers\WordController@enter')->name('word.enter');
