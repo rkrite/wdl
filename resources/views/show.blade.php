@@ -36,30 +36,32 @@
                 <div id="wc-board">
                     <form action="./enter" method="post">
                         @csrf
-                        @foreach ($wordmaps as $rowidx => $wordmap)
-                        <div class="wc-row ">
-                            <div class="">&nbsp;</div>
-                            @foreach ($wordmap["letters"] as $colidx => $letter)
-                            <div class="input-group wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
-                                <input
-                                    type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
-                                    value="{{ $letter }}"
-                                    maxlength="1"
-                                    class="wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
-                                    name="word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                    id="word_{{ $rowidx }}_letter_{{ $colidx }}">
-                                <input
-                                    type="hidden"
-                                    id="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                    name="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                    value="{{ $wordmap["marks"][$colidx] }}">
+                        <div class="wc-game-row">
+                            @foreach ($wordmaps as $rowidx => $wordmap)
+                            <div class="wc-row ">
+                                <div class="">&nbsp;</div>
+                                @foreach ($wordmap["letters"] as $colidx => $letter)
+                                <div class="input-group wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
+                                    <input
+                                        type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
+                                        value="{{ $letter }}"
+                                        maxlength="1"
+                                        class="wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
+                                        name="word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                        id="word_{{ $rowidx }}_letter_{{ $colidx }}">
+                                    <input
+                                        type="hidden"
+                                        id="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                        name="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                        value="{{ $wordmap["marks"][$colidx] }}">
+                                </div>
+                                @endforeach
+                                <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">&nbsp;</div>
                             </div>
                             @endforeach
-                            <div class="col-xs-4 col-sm-4 col-md-4 col-lg-4 col-xl-4">&nbsp;</div>
                         </div>
-                        @endforeach
-                        <button type="submit" class="btn" href="/enter">Enter</button>
-                        <a class="btn" href="./clear">Clear</a>
+                        <button type="submit" class="btn btn-primary" href="/enter">Enter</button>
+                        <a class="btn btn-success" href="./clear">Clear</a>
                     </form>
                 </div>
             </div>
