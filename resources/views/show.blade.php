@@ -40,7 +40,7 @@
                         <div class="wc-row ">
                             <div class="">&nbsp;</div>
                             @foreach ($wordmap["letters"] as $colidx => $letter)
-                            <div class="wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
+                            <div class="input-group wc-field-group col-xs-1 col-sm-1 col-md-1 col-lg-1 col-xl-1 border-0">
                                 <input
                                     type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
                                     value="{{ $letter }}"
@@ -59,7 +59,7 @@
                         </div>
                         @endforeach
                         <button type="submit" class="btn" href="/enter">Enter</button>
-                        <a class="btn" href="/clear">Clear</a>
+                        <a class="btn" href="./clear">Clear</a>
                     </form>
                 </div>
             </div>
@@ -77,6 +77,10 @@
                 </div>
             </div>
         </div>
+
+        <footer class="bg-primary text-center fixed-bottom">
+            <a class="text-light" href="https://github.com/rkrite/wdl">github.com/rkrite/wdl</a>
+        </footer>
 
         <script>
             $(document).ready(function(){
