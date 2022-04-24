@@ -112,7 +112,7 @@ class WordController extends Controller
                 }
             }
 
-            $sql = "select word from words " . $br . "where 1=1 " . $br . $wsql . "limit 30 " . $br;
+            $sql = "select word from words " . $br . "where 1=1 " . $br . $wsql . " order by rand() limit 30 " . $br;
             $foundwords = GExecSqlRaw ($sql);
         }
         while (count($wordmaps) < $numwords){
