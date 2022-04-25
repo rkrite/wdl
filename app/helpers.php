@@ -1,6 +1,7 @@
 <?php
     use App\Word;
     use Illuminate\Support\Str;
+    use Illuminate\Support\Facades\DB;
 
     // =====================================
     // =====================================
