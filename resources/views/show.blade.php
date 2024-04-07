@@ -57,6 +57,8 @@
                                     <input
                                         type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
                                         value="{{ $letter }}"
+                                        wdlword="{{ $rowidx }}"
+                                        wdlletter="{{ $colidx }}"
                                         maxlength="1"
                                         class="wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
                                         name="word_{{ $rowidx }}_letter_{{ $colidx }}"
@@ -132,24 +134,38 @@
         <script>
             $(document).ready(function(){
                 $(".wc-input").keyup(function () {
-
                     var vElement = $(this);
-                    var vElementName = vElement.attr("name");
+                    var vWord = vElement.attr("wdlword");
+                    var vLetter = vElement.attr("wdlletter");
+                    var vNextWord = 0;
+                    var vNextLetter = 0;
+
                     var vMaxLen = vElement.attr("maxlength");
                     var vLen = vElement.val().length;
+
+                    if (vLetter == 4){
+                        if (vWord == 5){
+                            vNextWord = 0;
+                        } else {
+                            vNextWord = Number(vWord) + 1;
+                        }
+                        vNextLetter = 0;
+                    } else {
+                        vNextLetter = Number(vLetter) + 1;
+                        vNextWord = vWord;
+                    }
+
+                    var vNextFieldName = "word_" + vNextWord + "_letter_" + vNextLetter;
+
                     var vIndex = vElement.index(".wc-input");
-                    var vNextElement = vElement.next('.wc-input');
+                    var vNextElement = $('[name="' + vNextFieldName + '"]');
                     var vNextElementName = vNextElement.attr("name");
-
-                    var inputs = vElement.closest('form').find(':focusable');
-
                     if (vLen >= vMaxLen) {
-                      vNextElement('.wc-input').focus();
+                      vNextElement.focus();
                     }
                 });
             });
         </script>
-
     </body>
 
 </html>
