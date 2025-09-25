@@ -1,6 +1,6 @@
 # WDL – Laravel Wordle Cheater
 
-A Laravel 8.83.8 web app that suggests possible Wordle answers based on the letters and colours you input.
+A Laravel 9.52.20 web app that suggests possible Wordle answers based on the letters and colours you input.
 
 ---
 
