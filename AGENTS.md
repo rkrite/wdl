@@ -7,6 +7,9 @@ Welcome, Agent. This document provides a high-level overview of the WDL project'
 ## 1. Project Overview
 **WDL** is a Laravel-based Wordle assistant. It allows users to input their guesses and the resulting "clues" (Green/Yellow/Black) to receive a list of matching 5-letter words from a database.
 
+### Local Environment
+- **Development URL**: http://wdl.tst/
+
 ### Tech Stack
 - **Backend**: Laravel 9.x, PHP 8.x
 - **Frontend**: Blade, Bootstrap 5, jQuery, Custom CSS/JS
