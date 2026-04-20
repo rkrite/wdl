@@ -4,26 +4,24 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-        <meta name="Description" content="{{ GC("APP_NAME") }} website. Information and contact details.">
+        <meta name="Description" content="{{ GC("APP_NAME") }} Wordle Helper. Get matching words based on your clues.">
 
         {{-- CSRF Token --}}
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ GC("APP_NAME") }}</title>
+        <title>{{ GC("APP_NAME") }} | Wordle Assistant</title>
 
-        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+        {{-- Fonts --}}
+        <link rel="preconnect" href="https://fonts.googleapis.com">
+        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;800&display=swap" rel="stylesheet">
 
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet">
         <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 
         {{-- Styles --}}
-        <link href="./css/app.css{{ GForceNoCache(['force'=>1]) }}" rel="stylesheet">
         <link href="./css/custom.css{{ GForceNoCache(['force'=>1]) }}" rel="stylesheet">
 
-        {{-- Scripts --}}
-        <script src="./js/app.js{{ GForceNoCache(['force'=>1]) }}"></script>
-        <script src="./js/custom.js{{ GForceNoCache(['force'=>1]) }}"></script>
-
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
         <link rel="icon" type="image/png" href="/favicon.ico">
 
         <!-- Global site tag (gtag.js) - Google Analytics -->
@@ -32,141 +30,160 @@
           window.dataLayer = window.dataLayer || [];
           function gtag(){dataLayer.push(arguments);}
           gtag('js', new Date());
-
           gtag('config', 'G-8TDGHT4F88');
         </script>
-
     </head>
 
     <body>
         <div class="wc-game">
-            <div class="container text-center">
-                <h1 class="h1">Wordle Cheater</h1>
-                <h2>Why bother!!</h2>
-            </div>
+            <header class="text-center">
+                <h1 class="h1">WDL</h1>
+                <h2>Wordle Assistant</h2>
+            </header>
+
             <div class="wc-board-container">
-                <div id="wc-board">
-                    <form action="./enter" method="post">
-                        @csrf
-                        <div class="wc-game-row">
-                            @foreach ($wordmaps as $rowidx => $wordmap)
-                            <div class="wc-row ">
-                                <div class="">&nbsp;</div>
-                                @foreach ($wordmap["letters"] as $colidx => $letter)
-                                <div class="wc-field-group border-0">
-                                    <input
-                                        type="text" {{ ($rowidx == 0 and $colidx == 0)?e('autofocus'):e('') }}
-                                        value="{{ $letter }}"
-                                        wdlword="{{ $rowidx }}"
-                                        wdlletter="{{ $colidx }}"
-                                        maxlength="1"
-                                        class="wc-input border-1 mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
-                                        name="word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                        id="word_{{ $rowidx }}_letter_{{ $colidx }}">
-                                    <input
-                                        type="hidden"
-                                        id="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                        name="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
-                                        value="{{ $wordmap["marks"][$colidx] }}">
-                                </div>
-                                @endforeach
+                <form action="./enter" method="post" id="game-form">
+                    @csrf
+                    <div class="wc-game-row">
+                        @foreach ($wordmaps as $rowidx => $wordmap)
+                        <div class="wc-row">
+                            @foreach ($wordmap["letters"] as $colidx => $letter)
+                            <div class="wc-field-group">
+                                <input
+                                    type="text" {{ ($rowidx == 0 and $colidx == 0)?'autofocus':'' }}
+                                    value="{{ $letter }}"
+                                    wdlword="{{ $rowidx }}"
+                                    wdlletter="{{ $colidx }}"
+                                    maxlength="1"
+                                    autocomplete="off"
+                                    class="wc-input mark_{{ $wordmap["marks"][$colidx] }} toggle-state"
+                                    name="word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                    id="word_{{ $rowidx }}_letter_{{ $colidx }}">
+                                <input
+                                    type="hidden"
+                                    id="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                    name="val_word_{{ $rowidx }}_letter_{{ $colidx }}"
+                                    value="{{ $wordmap["marks"][$colidx] }}">
                             </div>
                             @endforeach
                         </div>
-                        <button type="submit" class="btn btn-primary" href="/enter">Enter</button>
+                        @endforeach
+                    </div>
+
+                    <div class="btn-container justify-content-center">
+                        <button type="submit" class="btn btn-primary">Enter</button>
                         <a class="btn btn-success" href="./clear">Clear</a>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
 
-
-            <div class="container text-center">
-                <h1>Words found ({{ count($foundwords) }}{{ (count($foundwords))==30?"+":"" }})...</h1>
+            @if(!empty($foundwords))
+            <div class="found-words-container">
+                <div class="found-words-header">
+                    <h1 class="h1" style="font-size: 1.2rem;">Found Words</h1>
+                    <span class="badge-count">{{ count($foundwords) }}{{ count($foundwords) >= 30 ? '+' : '' }}</span>
+                </div>
                 <div class="card deck-card">
                     <div class="card-body wc-found-words">
-                    <!-- {{ $i=1 }} -->
-                            @foreach ($foundwords as $foundword)
-                                <span class="btn btn-md border wc-found-word">{{ e($foundword->word) }}</span>
-                            @endforeach
-                        </div>
+                        @foreach ($foundwords as $foundword)
+                            <span class="wc-found-word">{{ e($foundword->word) }}</span>
+                        @endforeach
                     </div>
                 </div>
             </div>
-        </div>
+            @endif
 
-        <footer class="bg-primary text-center fixed-bottom">
-            <a class="text-light" href="https://github.com/rkrite/wdl">github.com/rkrite/wdl</a>
-        </footer>
+            <footer class="text-center">
+                <a href="https://github.com/rkrite/wdl" target="_blank">github.com/rkrite/wdl</a>
+            </footer>
+        </div>
 
         <script>
             $(document).ready(function(){
-                $(".toggle-state").on ('click',(function(){
+                // Color toggling with animation
+                $(".toggle-state").on('click', function(e){
                     var vElement = $(this);
                     var vName = vElement.attr("name");
                     var vValName = "val_" + vName;
-                    var vValElement = $("input[id=" + vValName + "]");
-                    var vChar = "A";
+                    var vValElement = $("#" + vValName);
+                    var currentState = vValElement.val() || "";
+                    var nextState = "";
 
-                    if (vElement.hasClass("mark_")){
-                        vChar = "x";
-                        vElement.removeClass("mark_");
-                        vValElement.val(vChar);
-                        vElement.addClass("mark_" + vChar);
-                    } else if (vElement.hasClass("mark_x")){
-                        vChar = "y";
-                        vElement.removeClass("mark_x");
-                        vValElement.val(vChar);
-                        vElement.addClass("mark_" + vChar);
-                    } else if (vElement.hasClass("mark_y")){
-                        vChar = "g";
-                        vElement.removeClass("mark_y");
-                        vValElement.val(vChar);
-                        vElement.addClass("mark_" + vChar);
-                    } else if (vElement.hasClass("mark_g")){
-                        vChar = "";
-                        vElement.removeClass("mark_g");
-                        vValElement.val(vChar);
-                        vElement.addClass("mark_" + vChar);
-                    }
-                }));
-            });
-        </script>
-        <script>
-            $(document).ready(function(){
-                $(".wc-input").keyup(function () {
+                    // Cycle: "" -> "x" -> "y" -> "g" -> ""
+                    if (currentState === "") nextState = "x";
+                    else if (currentState === "x") nextState = "y";
+                    else if (currentState === "y") nextState = "g";
+                    else nextState = "";
+
+                    // Animate flip
+                    vElement.addClass('flip');
+                    
+                    setTimeout(function() {
+                        vElement.removeClass("mark_ mark_x mark_y mark_g");
+                        vElement.addClass("mark_" + nextState);
+                        vValElement.val(nextState);
+                        vElement.removeClass('flip');
+                    }, 200);
+                });
+
+                // Input handling
+                $(".wc-input").on('input', function() {
                     var vElement = $(this);
-                    var vWord = vElement.attr("wdlword");
-                    var vLetter = vElement.attr("wdlletter");
-                    var vNextWord = 0;
-                    var vNextLetter = 0;
-
-                    var vMaxLen = vElement.attr("maxlength");
-                    var vLen = vElement.val().length;
-
-                    if (vLetter == 4){
-                        if (vWord == 5){
-                            vNextWord = 0;
-                        } else {
-                            vNextWord = Number(vWord) + 1;
-                        }
-                        vNextLetter = 0;
-                    } else {
-                        vNextLetter = Number(vLetter) + 1;
-                        vNextWord = vWord;
+                    var vWord = parseInt(vElement.attr("wdlword"));
+                    var vLetter = parseInt(vElement.attr("wdlletter"));
+                    
+                    // Overwrite logic: if length > 1, keep only the latest character
+                    if (vElement.val().length > 1) {
+                        vElement.val(vElement.val().slice(-1));
                     }
 
-                    var vNextFieldName = "word_" + vNextWord + "_letter_" + vNextLetter;
+                    // Pop animation when typing
+                    if (vElement.val().length > 0) {
+                        vElement.addClass('pop');
+                        setTimeout(() => vElement.removeClass('pop'), 100);
+                    }
 
-                    var vIndex = vElement.index(".wc-input");
-                    var vNextElement = $('[name="' + vNextFieldName + '"]');
-                    var vNextElementName = vNextElement.attr("name");
-                    if (vLen >= vMaxLen) {
-                      vNextElement.focus();
+                    if (vElement.val().length >= 1) {
+                        var nextLetter = vLetter + 1;
+                        var nextWord = vWord;
+                        
+                        if (nextLetter > 4) {
+                            nextLetter = 0;
+                            nextWord = vWord + 1;
+                        }
+
+                        if (nextWord <= 5) {
+                            $("#word_" + nextWord + "_letter_" + nextLetter).focus();
+                        }
+                    }
+                });
+
+                // Auto-select text on focus to make overwriting easier
+                $(".wc-input").on('focus', function() {
+                    this.select();
+                });
+
+                // Backspace handling
+                $(".wc-input").on('keydown', function(e) {
+                    if (e.which === 8 && $(this).val().length === 0) {
+                        var vWord = parseInt($(this).attr("wdlword"));
+                        var vLetter = parseInt($(this).attr("wdlletter"));
+                        
+                        var prevLetter = vLetter - 1;
+                        var prevWord = vWord;
+
+                        if (prevLetter < 0) {
+                            prevLetter = 4;
+                            prevWord = vWord - 1;
+                        }
+
+                        if (prevWord >= 0) {
+                            $("#word_" + prevWord + "_letter_" + prevLetter).focus();
+                        }
                     }
                 });
             });
         </script>
     </body>
-
 </html>
 

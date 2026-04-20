@@ -1,75 +1,218 @@
-body {
-    display: block;
-    height: 100%;
-    margin: 0;
-    padding: 0;
+:root {
+    --bg-color: #121213;
+    --card-bg: #1e1e20;
+    --text-main: #ffffff;
+    --text-muted: #818384;
+    --color-correct: #6aaa64;
+    --color-present: #c9b458;
+    --color-absent: #3a3a3c;
+    --color-empty: #121213;
+    --border-empty: #3a3a3c;
+    --border-active: #565758;
+    --glass-bg: rgba(255, 255, 255, 0.05);
+    --glass-border: rgba(255, 255, 255, 0.1);
 }
 
-.mark_x { background-color: #383838; }
-.mark_y { background-color: orange; }
-.mark_g { background-color: green; }
-.mark_ { background-color: grey; }
-.wc-field-group {  min-width: 50px;  max-width: 50px;  width: 50px; padding: 2px;};
-.wc-body-desktop {min-width: 500px; }
+body {
+    background-color: var(--bg-color);
+    color: var(--text-main);
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+}
 
 .wc-game {
-    width: 100%;
-    max-width: var(--game-max-width);
+    max-width: 600px;
     margin: 0 auto;
-    height: 100%;
+    padding: 20px;
     display: flex;
     flex-direction: column;
-    margin-bottom: 10px;
-}
-.wc-board-container {
-    display: flex;
-    justify-content: center;
     align-items: center;
-    flex-grow: 1;
-    overflow: hidden;
-    padding-bottom: 10px;
-    margin-bottom: 10px;
-}
-.wc-game-row {
-    margin-bottom: 10px;
-}
-#wc-board {
-    display: grid;
-    grid-gap: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-.wc-grid {
-    width: 350px;
-    height: 420px;
-}
-.wc-input {
-    margin: 0 auto;
-    color: white;
-    width: 100%;
-    display: inline-flex;
-    justify-content: center;
-    align-items: center;
-    font-size: 2rem;
-    line-height: 2rem;
-    font-weight: bold;
-    vertical-align: middle;
-    box-sizing: border-box;
-    text-transform: uppercase;
-    user-select: none;
-    text-align: center;
-}
-.wc-row {
-    display: flex;
-    justify-content: center;
-    margin: 0;
 }
 
-.wc-found-word{
-	margin: 3px;
-	padding-left: 3px;
-	padding-right: 3px;
-	font-size: .9rem;
-	font-family: courier;
-	background-color: #90EE90;
+header {
+    border-bottom: 1px solid var(--border-empty);
+    width: 100%;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.h1, h1 {
+    font-weight: 800;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 0;
+    color: var(--text-main);
+}
+
+h2 {
+    font-size: 1rem;
+    color: var(--text-muted);
+    font-weight: 400;
+}
+
+/* Grid Styles */
+.wc-board-container {
+    margin-bottom: 30px;
+}
+
+.wc-game-row {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.wc-row {
+    display: flex;
+    gap: 5px;
+    justify-content: center;
+}
+
+.wc-field-group {
+    width: 60px;
+    height: 60px;
+    perspective: 1000px;
+}
+
+.wc-input {
+    width: 100%;
+    height: 100%;
+    background-color: transparent;
+    border: 2px solid var(--border-empty);
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    text-align: center;
+    outline: none;
+    transition: all 0.2s ease, transform 0.4s cubic-bezier(0.45, 0.05, 0.55, 0.95);
+    cursor: pointer;
+}
+
+.wc-input:focus {
+    border-color: var(--border-active);
+}
+
+/* States */
+.mark_x { background-color: var(--color-absent); border-color: var(--color-absent); }
+.mark_y { background-color: var(--color-present); border-color: var(--color-present); }
+.mark_g { background-color: var(--color-correct); border-color: var(--color-correct); }
+.mark_  { background-color: transparent; border-color: var(--border-empty); }
+
+/* Animation classes */
+.flip {
+    transform: rotateX(90deg);
+}
+
+.pop {
+    animation: pop 0.1s ease-in-out;
+}
+
+@keyframes pop {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+/* Action Buttons */
+.btn-container {
+    display: flex;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+.btn-primary {
+    background-color: var(--color-correct) !important;
+    border: none !important;
+    padding: 12px 30px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+.btn-success {
+    background-color: var(--color-absent) !important;
+    border: none !important;
+    padding: 12px 30px !important;
+    font-weight: 700 !important;
+    text-transform: uppercase !important;
+    letter-spacing: 1px !important;
+}
+
+/* Found Words Section */
+.found-words-container {
+    width: 100%;
+    margin-top: 40px;
+}
+
+.card.deck-card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
+}
+
+.wc-found-words {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    justify-content: center;
+    padding: 20px;
+}
+
+.wc-found-word {
+    background: var(--color-absent);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    padding: 5px 12px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-weight: 600;
+    font-size: 1rem;
+    transition: transform 0.1s ease;
+}
+
+.wc-found-word:hover {
+    transform: translateY(-2px);
+    background: var(--color-correct);
+}
+
+.found-words-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.badge-count {
+    background: var(--color-correct);
+    padding: 4px 8px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+}
+
+footer {
+    padding: 20px 0;
+    color: var(--text-muted);
+}
+
+footer a {
+    color: var(--text-muted);
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: white;
+}
+
+@media (max-width: 500px) {
+    .wc-field-group {
+        width: 50px;
+        height: 50px;
+    }
+    .wc-input {
+        font-size: 1.5rem;
+    }
 }
